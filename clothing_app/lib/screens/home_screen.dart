@@ -340,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(16),
                   child: item.image != null && item.image!.isNotEmpty
                       ? Image.asset(
-                          'assets/pictures/${item['image']}',
+                          'assets/pictures/items/${item['image']}',
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Container(

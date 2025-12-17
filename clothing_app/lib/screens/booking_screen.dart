@@ -281,7 +281,7 @@ class _BookingScreenState extends State<BookingScreen> with TickerProviderStateM
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15),
               child: Image.asset(
-                'assets/pictures/${widget.item['image'] ?? 'kaftan1.webp'}',
+                'assets/pictures/items/${widget.item['image'] ?? 'kaftan1.webp'}',
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
