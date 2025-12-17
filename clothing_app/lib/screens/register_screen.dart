@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../api_service.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -41,6 +42,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       if (!mounted) return;
+
+      // Save user data to SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_name', _nameController.text.trim());
+      await prefs.setString('user_email', _emailController.text.trim());
+      await prefs.setBool('is_logged_in', true);
+      
+      // Clear rental history for new user
+      await prefs.remove('rental_history');
+      
+      // Clear favorites for new user
+      await prefs.remove('favorite_items');
 
       Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {

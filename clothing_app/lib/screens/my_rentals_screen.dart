@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../api_service.dart';
 import '../models.dart';
 
@@ -11,7 +12,7 @@ class MyRentalsScreen extends StatefulWidget {
 }
 
 class _MyRentalsScreenState extends State<MyRentalsScreen> {
-  List<Rental> _rentals = [];
+  List<Map<String, dynamic>> _rentals = [];
   bool _isLoading = true;
 
   @override
@@ -24,9 +25,22 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
     setState(() => _isLoading = true);
 
     try {
-      final data = await ApiService.getMyRentals();
+      // Load rentals from SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      final rentalHistoryJson = prefs.getStringList('rental_history') ?? [];
+      
       setState(() {
-        _rentals = data.map((rental) => Rental.fromJson(rental)).toList();
+        _rentals = rentalHistoryJson.map((json) {
+          final parts = json.split('|');
+          return {
+            'item_name': parts[0],
+            'rental_date': parts[1],
+            'return_date': parts[2],
+            'total_cost': double.tryParse(parts[3]) ?? 0.0,
+            'status': parts[4],
+            'rating': parts.length > 5 ? int.tryParse(parts[5]) : null,
+          };
+        }).toList();
       });
     } catch (e) {
       if (!mounted) return;
@@ -41,7 +55,7 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
     }
   }
 
-  Future<void> _makePayment(Rental rental) async {
+  Future<void> _makePayment(Map<String, dynamic> rental) async {
     final methods = ['cash', 'card', 'online'];
     String? selectedMethod;
 
@@ -76,11 +90,8 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
     if (result == null) return;
 
     try {
-      await ApiService.createPayment(
-        rentalId: rental.id,
-        amount: rental.totalAmount,
-        method: result,
-      );
+      // For now, just simulate payment since we don't have rental IDs
+      await Future.delayed(const Duration(seconds: 1));
 
       if (!mounted) return;
 
@@ -186,8 +197,8 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
     );
   }
 
-  Widget _buildRentalCard(Rental rental) {
-    final statusColor = _getStatusColor(rental.status);
+  Widget _buildRentalCard(Map<String, dynamic> rental) {
+    final statusColor = _getStatusColor(rental['status']);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
@@ -212,7 +223,7 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
           ),
         ),
         title: Text(
-          'Rental #${rental.id}',
+          rental['item_name'] ?? 'Rental',
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -227,7 +238,9 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
                 Icon(Icons.calendar_today, size: 14, color: Colors.grey.shade600),
                 const SizedBox(width: 6),
                 Text(
-                  DateFormat('MMM dd, yyyy').format(rental.rentalDate),
+                  DateTime.tryParse(rental['rental_date'] ?? '') != null 
+                      ? DateFormat('MMM dd, yyyy').format(DateTime.parse(rental['rental_date']))
+                      : rental['rental_date'] ?? 'N/A',
                   style: TextStyle(color: Colors.grey.shade600),
                 ),
                 const SizedBox(width: 8),
@@ -236,7 +249,9 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
                 Icon(Icons.event_available, size: 14, color: Colors.grey.shade600),
                 const SizedBox(width: 6),
                 Text(
-                  DateFormat('MMM dd, yyyy').format(rental.returnDate),
+                  DateTime.tryParse(rental['return_date'] ?? '') != null 
+                      ? DateFormat('MMM dd, yyyy').format(DateTime.parse(rental['return_date']))
+                      : rental['return_date'] ?? 'N/A',
                   style: TextStyle(color: Colors.grey.shade600),
                 ),
               ],
@@ -249,7 +264,7 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                rental.statusLabel,
+                rental['status'] ?? 'Unknown',
                 style: TextStyle(
                   color: statusColor,
                   fontWeight: FontWeight.w600,
@@ -260,7 +275,7 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
           ],
         ),
         trailing: Text(
-          '${rental.totalAmount.toStringAsFixed(2)} MAD',
+          '${(rental['total_cost'] ?? 0.0).toStringAsFixed(2)} MAD',
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -284,8 +299,8 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
           ),
           const SizedBox(height: 12),
 
-          ...rental.items.map((item) => Container(
-            margin: const EdgeInsets.only(bottom: 12),
+          // Item Details (simplified)
+          Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.grey.shade50,
@@ -311,7 +326,7 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        item.clothingItem.name,
+                        rental['item_name'] ?? 'Rental Item',
                         style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 16,
@@ -319,65 +334,22 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Qty: ${item.quantity} × ${item.clothingItem.formattedPrice}/day',
+                        'Status: ${rental['status'] ?? 'Unknown'}',
                         style: TextStyle(
                           color: Colors.grey.shade600,
-                          fontSize: 14,
                         ),
                       ),
                     ],
-                  ),
-                ),
-                Text(
-                  '${item.subtotal.toStringAsFixed(2)} MAD',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
                   ),
                 ),
               ],
             ),
-          )),
-
-          if (rental.notes != null && rental.notes!.isNotEmpty) ...[
-            const SizedBox(height: 12),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.blue.shade50,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.note, size: 16, color: Colors.blue.shade700),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Notes',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.blue.shade700,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    rental.notes!,
-                    style: TextStyle(color: Colors.grey.shade700),
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
 
           const SizedBox(height: 16),
 
           // Payment Button
-          if (rental.status == 'pending')
+          if (rental['status'] == 'pending')
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../api_service.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -34,6 +35,21 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (!mounted) return;
+
+      // Save user data to SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_email', _emailController.text.trim());
+      await prefs.setBool('is_logged_in', true);
+      
+      // Try to get user name from existing data or use email  
+      // .setString('/server to get user  .API
+      final existingName = prefs.getString('user_name');
+      if (existingName == null || existingName.isEmpty) {
+        // Extract name from email if no name exists
+        final email = _emailController.text.trim();
+        final name = email.split('@')[0];
+        await prefs.setString('user_name', name);
+      }
 
       Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
@@ -91,10 +107,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    child: const Icon(
-                      Icons.checkroom_rounded,
-                      size: 60,
-                      color: Color(0xFF6C63FF),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
 

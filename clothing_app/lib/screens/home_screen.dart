@@ -319,6 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
               'deposit_amount': item.depositAmount,
               'status': item.status,
               'condition': item.condition,
+              'image': item.image,
             },
           );
         },
@@ -327,25 +328,57 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              // Image Placeholder with better gradient
+              // Image with actual item image or placeholder
               Container(
                 width: 100,
                 height: 100,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      const Color(0xFF7C3AED),
-                      const Color(0xFFA855F7),
-                    ],
-                  ),
                   borderRadius: BorderRadius.circular(16),
+                  color: Colors.grey.shade100,
                 ),
-                child: const Icon(
-                  Icons.checkroom_rounded,
-                  size: 50,
-                  color: Colors.white,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: item.image != null && item.image!.isNotEmpty
+                      ? Image.network(
+                          'http://localhost:8000/api/images/${item.image}',
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    const Color(0xFF00897B),
+                                    const Color(0xFF26A69A),
+                                  ],
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.checkroom_rounded,
+                                size: 40,
+                                color: Colors.white,
+                              ),
+                            );
+                          },
+                        )
+                      : Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                const Color(0xFF00897B),
+                                const Color(0xFF26A69A),
+                              ],
+                            ),
+                          ),
+                          child: const Icon(
+                            Icons.checkroom_rounded,
+                            size: 40,
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ),
 
@@ -430,10 +463,14 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showNavigationMenu() {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) => Container(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.8,
+        ),
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -447,37 +484,61 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            ListTile(
-              leading: const Icon(Icons.history, color: Color(0xFF7C3AED)),
-              title: const Text('My Rentals'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/my-rentals');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.add_shopping_cart, color: Color(0xFF7C3AED)),
-              title: const Text('Create Rental'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to create rental (needs item selection)
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.category, color: Color(0xFF7C3AED)),
-              title: const Text('Browse Categories'),
-              onTap: () {
-                Navigator.pop(context);
-                // Show categories dialog
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red),
-              title: const Text('Logout'),
-              onTap: () {
-                Navigator.pop(context);
-                _logout();
-              },
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.history, color: Color(0xFF7C3AED)),
+                      title: const Text('My Rentals'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/my-rentals');
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.add_shopping_cart, color: Color(0xFF7C3AED)),
+                      title: const Text('Create Rental'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        // Navigate to create rental (needs item selection)
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.category, color: Color(0xFF7C3AED)),
+                      title: const Text('Browse Categories'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/categories');
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.search, color: Color(0xFF7C3AED)),
+                      title: const Text('Advanced Search'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/advanced-search');
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.person, color: Color(0xFF7C3AED)),
+                      title: const Text('My Profile'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/user-profile');
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.logout, color: Colors.red),
+                      title: const Text('Logout'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        _logout();
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

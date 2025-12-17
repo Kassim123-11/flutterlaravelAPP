@@ -26,11 +26,29 @@ class ItemDetailScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                child: const Icon(
-                  Icons.checkroom_rounded,
-                  size: 120,
-                  color: Colors.white,
-                ),
+                child: item['image'] != null && item['image'].isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                        child: Image.network(
+                          'http://localhost:8000/api/images/${item['image']}',
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(
+                              Icons.checkroom_rounded,
+                              size: 120,
+                              color: Colors.white,
+                            );
+                          },
+                        ),
+                      )
+                    : const Icon(
+                        Icons.checkroom_rounded,
+                        size: 120,
+                        color: Colors.white,
+                      ),
               ),
             ),
           ),
@@ -216,16 +234,18 @@ class ItemDetailScreen extends StatelessWidget {
             onPressed: () {
               Navigator.pushNamed(
                 context,
-                '/create-rental',
+                '/booking',
                 arguments: item,
               );
             },
             style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF00897B),
+              foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
-              elevation: 5,
+              elevation: 4,
             ),
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -233,7 +253,7 @@ class ItemDetailScreen extends StatelessWidget {
                 Icon(Icons.shopping_bag_outlined, size: 24),
                 SizedBox(width: 12),
                 Text(
-                  'Rent This Item',
+                  'Book This Item',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

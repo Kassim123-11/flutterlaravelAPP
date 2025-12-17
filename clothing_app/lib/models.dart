@@ -53,6 +53,7 @@ class ClothingItem {
   final double depositAmount;
   final String status;
   final String condition;
+  final String? image;
 
   ClothingItem({
     required this.id,
@@ -66,6 +67,7 @@ class ClothingItem {
     required this.depositAmount,
     required this.status,
     required this.condition,
+    this.image,
   });
 
   factory ClothingItem.fromJson(Map<String, dynamic> json) {
@@ -83,6 +85,7 @@ class ClothingItem {
       depositAmount: double.parse(json['deposit_amount'].toString()),
       status: json['status'],
       condition: json['condition'],
+      image: json['image'],
     );
   }
 

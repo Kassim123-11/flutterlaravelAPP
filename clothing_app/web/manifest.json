@@ -1,11 +1,11 @@
 {
-    "name": "clothing_app",
-    "short_name": "clothing_app",
+    "name": "Mowdaav Rentals",
+    "short_name": "Mowdaav",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#00897B",
+    "theme_color": "#00897B",
+    "description": "Premium clothing rental service for traditional and modern attire.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

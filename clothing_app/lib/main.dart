@@ -4,8 +4,12 @@ import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/item_detail_screen.dart';
-import 'screens/create_rental_screen.dart';
 import 'screens/my_rentals_screen.dart';
+import 'screens/categories_screen.dart';
+import 'screens/advanced_search_screen.dart';
+import 'screens/user_profile_screen.dart';
+import 'screens/booking_screen.dart';
+import 'screens/edit_profile_screen.dart';
 import 'api_service.dart';
 
 void main() async {
@@ -79,10 +83,10 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(
               builder: (context) => ItemDetailScreen(item: args ?? {}),
             );
-          case '/create-rental':
+          case '/booking':
             final args = settings.arguments as Map<String, dynamic>?;
             return MaterialPageRoute(
-              builder: (context) => CreateRentalScreen(item: args ?? {}),
+              builder: (context) => BookingScreen(item: args ?? {}),
             );
           default:
             return null;
@@ -93,6 +97,10 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/home': (context) => const HomeScreen(),
+        '/categories': (context) => const CategoriesScreen(),
+        '/advanced-search': (context) => const AdvancedSearchScreen(),
+        '/user-profile': (context) => const UserProfileScreen(),
+        '/edit-profile': (context) => const EditProfileScreen(),
         '/my-rentals': (context) => const MyRentalsScreen(),
       },
     );
