@@ -94,12 +94,21 @@ class _CategoriesScreenState extends State<CategoriesScreen>
       });
     } catch (e) {
       if (!mounted) return;
+      
+      // Show error message but don't crash
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error: ${e.toString()}'),
-          backgroundColor: Colors.red,
+          content: Text('Cannot connect to server. Using offline mode.'),
+          backgroundColor: Colors.orange,
+          duration: const Duration(seconds: 3),
         ),
       );
+      
+      // Set empty items list to prevent crash
+      setState(() {
+        _allItems = [];
+        _filteredItems = [];
+      });
     } finally {
       setState(() => _isLoading = false);
     }
