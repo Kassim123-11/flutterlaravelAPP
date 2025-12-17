@@ -483,7 +483,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                         topRight: Radius.circular(20),
                       ),
                       child: Image.asset(
-                        'assets/pictures/logo.png',
+                        'assets/images/logo.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(

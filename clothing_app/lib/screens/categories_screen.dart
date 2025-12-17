@@ -114,7 +114,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
         _filteredItems = _allItems.where((item) {
           final itemName = item.name.toLowerCase();
           final itemImage = item.image?.toLowerCase() ?? '';
-          
+
           // Check both name and image path for category matching
           switch (category.toLowerCase()) {
             case 'kaftans':
@@ -124,19 +124,19 @@ class _CategoriesScreenState extends State<CategoriesScreen>
             case 'hoodies':
               return itemName.contains('hoodie') || itemImage.contains('hoodie');
             case 'traditional':
-              return itemName.contains('kaftan') || 
-                     itemName.contains('royale') || 
-                     itemName.contains('tradition') ||
-                     itemImage.contains('kaftan');
+              return itemName.contains('kaftan') ||
+                  itemName.contains('royale') ||
+                  itemName.contains('tradition') ||
+                  itemImage.contains('kaftan');
             case 'modern':
-              return itemName.contains('costume') || 
-                     itemName.contains('moderne') || 
-                     itemName.contains('chic') ||
-                     itemImage.contains('costume') ||
-                     itemImage.contains('hoodie');
+              return itemName.contains('costume') ||
+                  itemName.contains('moderne') ||
+                  itemName.contains('chic') ||
+                  itemImage.contains('costume') ||
+                  itemImage.contains('hoodie');
             default:
-              return itemName.contains(category.toLowerCase()) || 
-                     itemImage.contains(category.toLowerCase());
+              return itemName.contains(category.toLowerCase()) ||
+                  itemImage.contains(category.toLowerCase());
           }
         }).toList();
       }
@@ -197,7 +197,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                     const Spacer(),
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
+                        color: Colors.white.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: IconButton(
@@ -230,34 +230,34 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                         final itemCount = category['name'] == 'All Items'
                             ? _allItems.length
                             : _allItems.where((item) {
-                                final itemName = item.name.toLowerCase();
-                                final itemImage = item.image?.toLowerCase() ?? '';
-                                final categoryName = category['name'].toLowerCase();
-                                
-                                // Use same logic as _filterByCategory
-                                switch (categoryName) {
-                                  case 'kaftans':
-                                    return itemName.contains('kaftan') || itemImage.contains('kaftan');
-                                  case 'costumes':
-                                    return itemName.contains('costume') || itemImage.contains('costume');
-                                  case 'hoodies':
-                                    return itemName.contains('hoodie') || itemImage.contains('hoodie');
-                                  case 'traditional':
-                                    return itemName.contains('kaftan') || 
-                                           itemName.contains('royale') || 
-                                           itemName.contains('tradition') ||
-                                           itemImage.contains('kaftan');
-                                  case 'modern':
-                                    return itemName.contains('costume') || 
-                                           itemName.contains('moderne') || 
-                                           itemName.contains('chic') ||
-                                           itemImage.contains('costume') ||
-                                           itemImage.contains('hoodie');
-                                  default:
-                                    return itemName.contains(categoryName) || 
-                                           itemImage.contains(categoryName);
-                                }
-                              }).length;
+                          final itemName = item.name.toLowerCase();
+                          final itemImage = item.image?.toLowerCase() ?? '';
+                          final categoryName = category['name'].toLowerCase();
+
+                          // Use same logic as _filterByCategory
+                          switch (categoryName) {
+                            case 'kaftans':
+                              return itemName.contains('kaftan') || itemImage.contains('kaftan');
+                            case 'costumes':
+                              return itemName.contains('costume') || itemImage.contains('costume');
+                            case 'hoodies':
+                              return itemName.contains('hoodie') || itemImage.contains('hoodie');
+                            case 'traditional':
+                              return itemName.contains('kaftan') ||
+                                  itemName.contains('royale') ||
+                                  itemName.contains('tradition') ||
+                                  itemImage.contains('kaftan');
+                            case 'modern':
+                              return itemName.contains('costume') ||
+                                  itemName.contains('moderne') ||
+                                  itemName.contains('chic') ||
+                                  itemImage.contains('costume') ||
+                                  itemImage.contains('hoodie');
+                            default:
+                              return itemName.contains(categoryName) ||
+                                  itemImage.contains(categoryName);
+                          }
+                        }).length;
 
                         return CategoryCard(
                           category: category,
@@ -282,7 +282,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
+                        color: Colors.black.withOpacity(0.1),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -293,7 +293,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF7C3AED).withValues(alpha: 0.1),
+                          color: const Color(0xFF7C3AED).withOpacity(0.1),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Icon(
@@ -431,7 +431,7 @@ class FilteredItemCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
+              color: Colors.black.withOpacity(0.1),
               blurRadius: 15,
               offset: const Offset(0, 5),
             ),
@@ -474,7 +474,7 @@ class FilteredItemCard extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             // Details
             Expanded(
               flex: 2,
@@ -601,13 +601,13 @@ class _CategoryCardState extends State<CategoryCard>
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: widget.category['color'].withValues(alpha: 0.3),
+                      color: widget.category['color'].withOpacity(0.3),
                       blurRadius: 15,
                       offset: const Offset(0, 8),
                     ),
                     if (widget.isSelected)
                       BoxShadow(
-                        color: widget.category['color'].withValues(alpha: 0.6),
+                        color: widget.category['color'].withOpacity(0.6),
                         blurRadius: 20,
                         offset: const Offset(0, 8),
                       ),
@@ -626,12 +626,12 @@ class _CategoryCardState extends State<CategoryCard>
                         width: 80,
                         height: 80,
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.1),
+                          color: Colors.white.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(40),
                         ),
                       ),
                     ),
-                    
+
                     // Content
                     Padding(
                       padding: const EdgeInsets.all(20),
@@ -642,7 +642,7 @@ class _CategoryCardState extends State<CategoryCard>
                           Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.2),
+                              color: Colors.white.withOpacity(0.2),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: Icon(
@@ -651,9 +651,9 @@ class _CategoryCardState extends State<CategoryCard>
                               size: 28,
                             ),
                           ),
-                          
+
                           const Spacer(),
-                          
+
                           // Category Name
                           Text(
                             widget.category['name'],
@@ -663,9 +663,9 @@ class _CategoryCardState extends State<CategoryCard>
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          
+
                           const SizedBox(height: 8),
-                          
+
                           // Item Count
                           Container(
                             padding: const EdgeInsets.symmetric(
@@ -673,7 +673,7 @@ class _CategoryCardState extends State<CategoryCard>
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.2),
+                              color: Colors.white.withOpacity(0.2),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
@@ -688,7 +688,7 @@ class _CategoryCardState extends State<CategoryCard>
                         ],
                       ),
                     ),
-                    
+
                     // Selected Badge
                     if (widget.isSelected)
                       Positioned(
@@ -784,7 +784,7 @@ class _CategoryFilterDialogState extends State<CategoryFilterDialog>
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.2),
+                      color: Colors.black.withOpacity(0.2),
                       blurRadius: 30,
                       offset: const Offset(0, 15),
                     ),
@@ -826,9 +826,9 @@ class _CategoryFilterDialogState extends State<CategoryFilterDialog>
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 25),
-                    
+
                     // Categories List - Make it scrollable
                     Expanded(
                       child: SingleChildScrollView(
@@ -924,7 +924,7 @@ class _CategoryFilterItemState extends State<CategoryFilterItem>
                 boxShadow: [
                   if (widget.isSelected)
                     BoxShadow(
-                      color: widget.category['color'].withValues(alpha: 0.3),
+                      color: widget.category['color'].withOpacity(0.3),
                       blurRadius: 15,
                       offset: const Offset(0, 5),
                     ),
@@ -937,8 +937,8 @@ class _CategoryFilterItemState extends State<CategoryFilterItem>
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: widget.isSelected
-                          ? Colors.white.withValues(alpha: 0.2)
-                          : widget.category['color'].withValues(alpha: 0.1),
+                          ? Colors.white.withOpacity(0.2)
+                          : widget.category['color'].withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
@@ -949,9 +949,9 @@ class _CategoryFilterItemState extends State<CategoryFilterItem>
                       size: 22,
                     ),
                   ),
-                  
+
                   const SizedBox(width: 15),
-                  
+
                   // Name
                   Expanded(
                     child: Text(
@@ -963,7 +963,7 @@ class _CategoryFilterItemState extends State<CategoryFilterItem>
                       ),
                     ),
                   ),
-                  
+
                   // Selection Indicator
                   Container(
                     width: 24,
@@ -976,10 +976,10 @@ class _CategoryFilterItemState extends State<CategoryFilterItem>
                     ),
                     child: widget.isSelected
                         ? const Icon(
-                            Icons.check,
-                            color: Color(0xFF7C3AED),
-                            size: 16,
-                          )
+                      Icons.check,
+                      color: Color(0xFF7C3AED),
+                      size: 16,
+                    )
                         : null,
                   ),
                 ],
