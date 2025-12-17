@@ -57,7 +57,16 @@ class ClothingController extends Controller
             'deposit_amount' => 'required|numeric|min:0',
             'status' => 'nullable|in:available,rented,maintenance,cleaning',
             'condition' => 'nullable|in:new,excellent,good,fair',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
         ]);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('storage/items'), $imageName);
+            $validated['image'] = 'items/' . $imageName;
+        }
 
         $item = ClothingItem::create($validated);
 

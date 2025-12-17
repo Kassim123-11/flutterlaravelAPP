@@ -12,7 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
     // channels: __DIR__.'/../routes/channels.php',
 )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->web(append: [
+            \App\Http\Middleware\CorsMiddleware::class,
+        ]);
+        $middleware->api(append: [
+            \App\Http\Middleware\CorsMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

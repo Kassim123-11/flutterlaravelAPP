@@ -13,6 +13,13 @@
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
+    # Add CORS headers for storage files
+    <FilesMatch "\.(webp|jpg|jpeg|png|gif|svg)$">
+        Header always set Access-Control-Allow-Origin "*"
+        Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
+    </FilesMatch>
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$

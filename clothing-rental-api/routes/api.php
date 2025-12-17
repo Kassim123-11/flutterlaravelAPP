@@ -60,6 +60,24 @@ Route::prefix('clothing')->group(function () {
     Route::delete('/{id}', [ClothingController::class, 'destroy']);  // Delete item
 });
 
+// Image serving route with CORS headers
+Route::get('/images/{path}', function ($path) {
+    $imagePath = storage_path('app/public/' . $path);
+    
+    if (!file_exists($imagePath)) {
+        return response()->json(['error' => 'Image not found'], 404);
+    }
+    
+    $image = file_get_contents($imagePath);
+    $mimeType = mime_content_type($imagePath);
+    
+    return response($image)
+        ->header('Content-Type', $mimeType)
+        ->header('Access-Control-Allow-Origin', '*')
+        ->header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+})->where('path', '.*');
+
 // Health check route (for mobile app)
 Route::get('/health', function () {
     return response()->json([
