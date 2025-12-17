@@ -482,8 +482,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
                       ),
-                      child: Image.network(
-                        'http://localhost:8000/api/images/${item.image ?? ''}',
+                      child: Image.asset(
+                        'assets/pictures/logo.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(

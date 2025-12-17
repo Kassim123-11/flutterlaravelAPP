@@ -474,8 +474,8 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
-                  child: Image.network(
-                    'http://localhost:8000/api/images/${item.image ?? ''}',
+                  child: Image.asset(
+                    'assets/pictures/${item.image ?? 'kaftan1.webp'}',
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(

@@ -339,8 +339,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: item.image != null && item.image!.isNotEmpty
-                      ? Image.network(
-                          'http://localhost:8000/api/images/${item.image}',
+                      ? Image.asset(
+                          'assets/pictures/${item.image}',
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Container(

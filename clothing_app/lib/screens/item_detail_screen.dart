@@ -32,8 +32,8 @@ class ItemDetailScreen extends StatelessWidget {
                           bottomLeft: Radius.circular(20),
                           bottomRight: Radius.circular(20),
                         ),
-                        child: Image.network(
-                          'http://localhost:8000/api/images/${item['image']}',
+                        child: Image.asset(
+                          'assets/pictures/${item['image'] ?? 'kaftan1.webp'}',
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return const Icon(
