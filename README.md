@@ -94,8 +94,16 @@ flutter run
 - Profil utilisateur
 
 ## 📸 Captures d'écran
-*(Les captures d'écran seront ajoutées après l'exécution de l'application)*
 
+| Écran | Capture |
+|-------|---------|
+| **Écran d'accueil** | ![Home Screen](screenshots/Home_screen.png) |
+| **Connexion** | ![Login Screen](screenshots/Login_screen.png) |
+| **Inscription** | ![Register Screen](screenshots/register_screen.png) |
+| **Menu** | ![Menu Screen](screenshots/Menu_screen.png) |
+| **Catégories** | ![Categories Screen](screenshots/categories_screen.png) |
+| **Mes locations** | ![My Rentals Screen](screenshots/Myrentals_screen.png) |
+| **Profil** | ![Profile Screen](screenshots/Profile_screen.png) |
 ## 🔧 Développement
 Pour contribuer au projet, veuillez suivre ces étapes :
 1. Fork le dépôt
