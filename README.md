@@ -108,7 +108,8 @@ Pour contribuer au projet, veuillez suivre ces étapes :
 Ce projet est sous licence MIT.
 
 ## 👥 Auteurs
-- [Votre Nom]
+- Oussama Kassem  (MowdaavAIRevolution)
+
 
 ---
 
